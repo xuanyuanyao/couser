@@ -1,0 +1,30 @@
+{
+    "_comment": "这是五子棋游戏的配置文件。您可以根据需要调整以下设置。",
+    "window": {
+        "_comment": "设置游戏窗口的大小（单位：像素）",
+        "width": 800,
+        "height": 800
+    },
+    "board": {
+        "_comment": "设置棋盘的大小和每个格子的尺寸",
+        "size": 15,
+        "cell_size": 40
+    },
+    "colors": {
+        "_comment": "设置游戏中使用的颜色（格式：[R, G, B]）",
+        "board": [220, 179, 92],
+        "black": [0, 0, 0],
+        "white": [255, 255, 255],
+        "text": [0, 0, 0],
+        "win_text": [255, 0, 0]
+    },
+    "ai": {
+        "_comment": "设置AI的默认难度（可选值：easy, medium, hard）",
+        "default_difficulty": "medium"
+    },
+    "font": {
+        "_comment": "设置游戏中使用的字体",
+        "size": 36,
+        "name": "simsun"
+    }
+}
