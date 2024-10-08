@@ -308,6 +308,107 @@ def check_win_board(board):
                     return True
     return False
 
+# 在AI类中添加错误处理
+class AI:
+    # ...
+
+    def move(self, board):
+        try:
+            if self.difficulty == "easy":
+                return self.random_move(board)
+            elif self.difficulty == "medium":
+                return self.smart_move(board)
+            elif self.difficulty == "hard":
+                return self.minimax_move(board)
+            else:
+                raise ValueError(f"未知的难度级别: {self.difficulty}")
+        except Exception as e:
+            print(f"AI移动时发生错误: {str(e)}")
+            return None
+
+    # ...
+
+# 在Game类中添加错误处理
+class Game:
+    # ...
+
+    def play(self):
+        while True:
+            try:
+                self.display_board()
+                if self.current_player == "human":
+                    move = self.get_human_move()
+                else:
+                    move = self.ai.move(self.board)
+                    if move is None:
+                        print("AI无法生成有效移动，游戏结束。")
+                        break
+                
+                if self.make_move(move):
+                    if self.check_win(move):
+                        self.display_board()
+                        print(f"{self.current_player.capitalize()}获胜！")
+                        break
+                    if self.is_board_full():
+                        self.display_board()
+                        print("平局！")
+                        break
+                    self.switch_player()
+            except Exception as e:
+                print(f"游戏过程中发生错误: {str(e)}")
+                break
+
+    # ...
+
+    def check_win(self, move, board=None):
+        if board is None:
+            board = self.board
+        x, y = move
+        symbol = board[x][y]
+
+        # 检查水平方向
+        if self.check_line(board, x, y, 0, 1, symbol):
+            return True
+
+        # 检查垂直方向
+        if self.check_line(board, x, y, 1, 0, symbol):
+            return True
+
+        # 检查正对角线
+        if self.check_line(board, x, y, 1, 1, symbol):
+            return True
+
+        # 检查反对角线
+        if self.check_line(board, x, y, 1, -1, symbol):
+            return True
+
+        return False
+
+    def check_line(self, board, x, y, dx, dy, symbol):
+        count = 0
+        for i in range(-4, 5):
+            nx, ny = x + i*dx, y + i*dy
+            if 0 <= nx < self.size and 0 <= ny < self.size and board[nx][ny] == symbol:
+                count += 1
+                if count == 5:
+                    return True
+            else:
+                count = 0
+        return False
+
+class AI(Game):
+    # ...
+
+    def check_win_board(self, board, symbol):
+        for i in range(len(board)):
+            for j in range(len(board)):
+                if board[i][j] == symbol:
+                    if self.check_win((i, j), board):
+                        return True
+        return False
+
+    # ...
+
 def main():
     global current_player, game_over, is_ai_turn
 
